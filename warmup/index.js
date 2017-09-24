@@ -1,3 +1,4 @@
+var counter = 1
 function one() {
 
   // Start listening to STDIN
@@ -7,7 +8,7 @@ function one() {
   // Inline function to handle
   // message output
   var showMessage = (err) => {
-    console.log('State one');
+    console.log(`State ${counter}`);
     console.log('Type "next" to continue');
     if (err) {
       console.error(err);
@@ -33,8 +34,12 @@ function one() {
       // ----------------------------------------
       // Go to next view here
       // ----------------------------------------
+      if (counter === 3){
+        process.exit();
+      }
+      counter ++
+      one()
 
-      two("two")
 
     } else {
 
@@ -47,97 +52,5 @@ function one() {
   process.stdin.on('data', onData);
 }
 
-function two(arg){
-
-    // Start listening to STDIN
-    process.stdin.resume();
-    process.stdin.setEncoding('utf8');
-
-    // Inline function to handle
-    // message output
-    var showMessage = (err) => {
-      console.log(`State ${arg}`);
-      console.log('Type "next" to continue');
-      if (err) {
-        console.error(err);
-      }
-    };
-
-    // Display message
-    showMessage();
-
-
-    // Handler for STDIN data
-    // event
-    var onData = (data) => {
-      data = data.trim();
-
-      // If user input "next"
-      // let's go to the next
-      // state
-      if (data === 'next') {
-        process.stdin.pause();
-        process.stdin.removeListener('data', onData);
-
-        // ----------------------------------------
-        // Go to next view here
-        // ----------------------------------------
-        three("three")
-      } else {
-
-        // All other input is invalid
-        showMessage(`Invalid: ${ data }`);
-      }
-    };
-
-    // Set the listener
-    process.stdin.on('data', onData);
-  }
-  function three(arg){
-
-      // Start listening to STDIN
-      process.stdin.resume();
-      process.stdin.setEncoding('utf8');
-
-      // Inline function to handle
-      // message output
-      var showMessage = (err) => {
-        console.log(`State ${arg}`);
-        console.log('Type "next" to continue');
-        if (err) {
-          console.error(err);
-        }
-      };
-
-      // Display message
-      showMessage();
-
-
-      // Handler for STDIN data
-      // event
-      var onData = (data) => {
-        data = data.trim();
-
-        // If user input "next"
-        // let's go to the next
-        // state
-        if (data === 'next') {
-          process.stdin.pause();
-          process.stdin.removeListener('data', onData);
-
-          // ----------------------------------------
-          // Go to next view here
-          // ----------------------------------------
-          console.log("goodbye")
-        } else {
-
-          // All other input is invalid
-          showMessage(`Invalid: ${ data }`);
-        }
-      };
-
-      // Set the listener
-      process.stdin.on('data', onData);
-    }
 // Start the app
 one();
